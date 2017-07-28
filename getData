@@ -1,0 +1,96 @@
+# Usage:
+# myData <- getData("pathtofile")
+
+getData <- function(file){
+  
+  # variables of interest to read in
+  variables <- c("PMID","DP  ","JID ", "MH  ")
+  
+  con <- file(file, "rt")
+  test <- substr(scan(con, what = "", sep = "\n", quiet = TRUE), 1, 4)
+  close(con)
+  
+  varLines <- which(test %in% variables) # identifying variables of interest in file
+  
+  # saving information from variables of interest
+  
+  #create a skip vector for lines to skip in next scan
+  #skip argument in scan skips from the last entry read, hence varlines[i]-varlines[i-1]-1
+  #if statement ensures blank lines don't get stored as data 
+  
+  skip <- vector()
+  skip[1] <- 1
+  for(i in 2:length(varLines)){
+    skip[i] <- (varLines[i]-varLines[i-1]-1)
+  }
+  
+  con <- file(file, "rt")
+  entry <- list()
+  
+  
+  for(i in 1:length(varLines)){
+    entry[i] <- scan(con, sep="\n", what="", quiet=TRUE, skip = skip[i],blank.lines.skip=FALSE,nlines=1)
+    if(entry[i]==""){
+      entry[i] <- scan(con,sep="\n",what="",quiet=TRUE,skip=0,nlines=1,blank.lines.skip=FALSE)
+    }
+  }
+  
+  close(con)
+  
+  # creates list varPlusInfo of each variable name and corresponding information as two vectors inside one list element
+  varPlusInfo <- list()
+  for(i in 1:length(entry)){
+    x <- unlist(entry[i])
+    varPlusInfo[[i]] <- substr(x,1,4)
+    varPlusInfo[[i]][2] <- substr(x,7,nchar(x))
+  }
+  
+  PMIDindex <- vector()
+  for(i in 1:length(varPlusInfo)){
+    if(varPlusInfo[[i]][1] == "PMID"){
+      PMIDindex <- c(PMIDindex,i) 
+    }
+  }
+  
+  splitentry <- function(full,ind){
+    if(ind==length(PMIDindex)){
+      temp <- full[PMIDindex[ind]:length(full)]
+    }
+    else{
+      temp <- full[PMIDindex[ind]:(PMIDindex[ind+1]-1)]
+    }
+    return(temp)
+  }
+  
+  #create empty dataframe
+  d <- data.frame(PMID=vector(),DP=vector(),JID=vector(),MH=I(list()))
+  
+  for(i in 1:length(PMIDindex)){
+    
+    temp <- splitentry(varPlusInfo,i)
+    
+    MH <- vector()
+    
+    for(j in 1:length(temp)){
+      if(temp[[j]][1]=="MH  "){MH[j] <- temp[[j]][2]}
+    }
+    
+    MH <- MH[!is.na(MH)] #remove NAs
+    
+    for(k in 1:length(temp)){
+      if(temp[[k]][1]=="PMID"){
+        d[i,1] <- temp[[k]][2]
+      }
+      if(temp[[k]][1]=="DP  "){
+        d[i,2] <- temp[[k]][2]
+      }
+      if(temp[[k]][1]=="JID "){
+        d[i,3] <- temp[[k]][2]
+      }
+      if(temp[[k]][1]=="MH  "){
+        d[[i,4]] <- MH
+      }
+    }
+  }
+  return(d)
+}
