@@ -1,0 +1,30 @@
+# running SUTime & SUTime wrapper
+# followed instructions from: https://github.com/FraBle/python-sutime
+
+import os
+import json
+from sutime import SUTime
+
+files=[]
+for filename in os.listdir("./200_corpus_part_A"):
+	if filename.endswith(".txt"):
+		files.append(os.path.join("./200_corpus_part_A",filename))
+		continue
+	else:
+		continue
+
+annotations={}
+annotations['annotations']=[]
+
+for i in range(0,len(files)):
+	if __name__ == '__main__':
+
+		myFile= open(files[i],"r").read().decode('utf8')
+		jar_files = os.path.join(os.path.dirname(__file__), 'jars')
+		sutime = SUTime(jars=jar_files, mark_time_ranges=True)
+
+		# save annotations in dictionary
+		annotations['annotations'].append(json.dumps(sutime.parse(myFile), sort_keys=True, indent=4))
+
+with open('./time_expressions_2.txt','w') as outfile:
+	json.dump(annotations['annotations'],outfile)
