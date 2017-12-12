@@ -1,5 +1,5 @@
-# bd2k
-I wrote the code in this repository as part of a data science research internship at the NIH BD2K (Big Data to Knowledge) Center of Excellence for Biomedical Computing at UCLA during Spring 2017.
+# HeartBD2K
+Code in this repository is part of a data science research internship at the NIH BD2K (Big Data to Knowledge) Center of Excellence for Biomedical Computing at UCLA during Spring 2017.
 
 My main focus was on developing a user-friendly method for reading in article entries from PubMed in the MEDLINE format, and using such a method to retrieve data to study occurrences of and between MeSH terms in cardiovascular-related case reports. 
 
