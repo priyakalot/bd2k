@@ -2,16 +2,6 @@
 
 This is the beginning of a project to analyze time expressions in case reports from PubMed. The main analysis can be found in time-expressions-analysis.ipynb.
 
-```json
-{
-  "end": 437, 
-  "start": 428,
-  "text": "12 months",
-  "type": "DURATION",
-  "value": "P12M"
-}
-```
-
 ### running-SUTime
 I used SUTime (https://nlp.stanford.edu/software/sutime.html) to collect time expressions ("daily","2 days later") from case reports. Specifically, I used a Python wrapper for SUTime (https://github.com/FraBle/python-sutime). 
 
