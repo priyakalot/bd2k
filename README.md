@@ -5,7 +5,7 @@ This is the beginning of a project to analyze time expressions in case reports f
 ### running-SUTime
 I used SUTime (https://nlp.stanford.edu/software/sutime.html) to collect time expressions ("daily","2 days later") from case reports. Specifically, I used a Python wrapper for SUTime (https://github.com/FraBle/python-sutime). 
 
-SUTime and FraBle give examples of how to run SUTime on one document. To run SUTime on multiple documents, use running-SUTime. Have all documents saved as .txt files in one folder, and replace the the file paths in the code to point to your own folder with documents. Your output will then be a dictionary of JSON objects. An example of one JSON object with an annotation is below--
+First, install both SUTime and the Python wrapper for SUTime. To run SUTime on multiple documents, run running-SUTime with Python (I used Python 3). Have all documents you want annotated saved as .txt files in one folder, and replace file paths in the code to point to your own folder with documents. Your output will then be a text file in your working directory. This file will contain a dictionary of JSON objects. An example of one JSON object with an annotation is below:
 ```json
 {
   "end": 437, 
